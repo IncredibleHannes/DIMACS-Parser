@@ -5,7 +5,7 @@
  * Sven Bizu & Sylvia Siegel
  */
 
-package com.company;
+package main.java;
 
 import java.io.*;
 
