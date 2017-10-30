@@ -1,18 +1,26 @@
 package test;
 
 
-import com.company.SimpleParser;
+import main.java.SimpleParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SimpleParserTest {
+  
+    private SimpleParser setup(String loc) {
+        SimpleParser parser = new SimpleParser();
+        try {
+            parser.runParser(new File(loc));
+        } catch (IOException e) {
+            assert(false);
+        }
+        return parser;
+    }
 
     @Test
     public void testFileNotFound(){
@@ -34,16 +42,6 @@ public class SimpleParserTest {
     public void testRunParser () {
         SimpleParser parser = setup("src/test/aim-100-1_6-no-1.cnf");
 
-    }
-
-    private SimpleParser setup(String loc) {
-        SimpleParser parser = new SimpleParser();
-        try {
-            parser.runParser(new File(loc));
-        } catch (IOException e) {
-            assert(false);
-        }
-        return parser;
     }
 
     @Test
