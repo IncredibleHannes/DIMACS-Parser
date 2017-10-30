@@ -72,11 +72,11 @@ public class DimacsFile {
   public void printOutput(String input) {
       System.out.println("File: " + input);
       System.out.println("Problem line: #vars: " + numberVariables + ", #clauses: " + numberClauses );
-      System.out.println("Variable count:\t" + getNumberOfVariables());
-      System.out.println("Clauses count:\t" + getNumberOfClauses());
-      System.out.println("Literals count:\t" + getNumberOfLiterals());
-      System.out.println("Positive pure Literals: [" + getPositivePureLiterals().toString() + "]");
-      System.out.println("Negative pure Literals: [" + getNegativePureLiterals().toString() + "]");
-      System.out.println("Unit clauses: [" + getUnitClauses().toString() + "]");
+      System.out.println("Variable count:\t\t\t" + getNumberOfVariables());
+      System.out.println("Clauses count:\t\t\t" + getNumberOfClauses());
+      System.out.println("Literals count:\t\t\t" + getNumberOfLiterals());
+      System.out.println("Positive pure Literals: \t[" + getPositivePureLiterals().toString() + "]");
+      System.out.println("Negative pure Literals: \t[" + getNegativePureLiterals().toString() + "]");
+      System.out.println("Unit clauses: \t\t\t[" + getUnitClauses().toString() + "]");
   }
 }
