@@ -14,11 +14,25 @@ public class DNFFormular implements Iterable<Clause> {
   }
 
   public int getNumberOfVariables() {
-    return getAllVariables().size();
+    ArrayList<Integer> allVariables = getAllVariables();
+    Iterator<Integer> allVariablesIterator = allVariables.iterator();
+    while (allVariablesIterator.hasNext()){
+      int x = allVariablesIterator.next();
+      if(allVariables.contains(x * -1))
+        allVariablesIterator.remove();
+    }
+    return allVariables.size();
   }
 
   public int getNumberOfClauses(){
     return this.clauses.size();
+  }
+
+  public int getNumberOfLiterals(){
+    int num = 0;
+    for(Clause clause : clauses)
+      num += clause.size();
+    return num;
   }
 
   public ArrayList<Integer> getPureLiterals(){

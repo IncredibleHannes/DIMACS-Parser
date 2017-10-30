@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class DimacsFile {
 
   private DNFFormular dnfFormular;
+  private int numberVariables;
+  private int numberClauses;
 
   public DimacsFile(File inputFile) throws IOException {
     dnfFormular = parseFile(inputFile);
@@ -29,6 +31,8 @@ public class DimacsFile {
     if (!checkValidity(lines)){
       throw new IOException("Invalid input file!");
     }
+    numberVariables = Integer.parseInt(lines.get(0).split(" ")[2]);
+    numberClauses = Integer.parseInt(lines.get(0).split(" ")[3]);
     lines.remove(0);
     return new DNFFormular(lines);
   }
@@ -45,6 +49,9 @@ public class DimacsFile {
     return dnfFormular.getNumberOfClauses();
   }
 
+  public int getNumberOfLiterals(){
+    return dnfFormular.getNumberOfLiterals();
+  }
 
   public ArrayList<Integer> getPureLiterals(){
     return dnfFormular.getPureLiterals();
@@ -64,7 +71,10 @@ public class DimacsFile {
 
   public void printOutput(String input) {
       System.out.println("File: " + input);
-      System.out.println("Problem line: #vars: " + getNumberOfVariables() + ", #clauses: " + getNumberOfClauses() );
+      System.out.println("Problem line: #vars: " + numberVariables + ", #clauses: " + numberClauses );
+      System.out.println("Variable count:\t" + getNumberOfVariables());
+      System.out.println("Clauses count:\t" + getNumberOfClauses());
+      System.out.println("Literals count:\t" + getNumberOfLiterals());
       System.out.println("Positive pure Literals: [" + getPositivePureLiterals().toString() + "]");
       System.out.println("Negative pure Literals: [" + getNegativePureLiterals().toString() + "]");
       System.out.println("Unit clauses: [" + getUnitClauses().toString() + "]");
