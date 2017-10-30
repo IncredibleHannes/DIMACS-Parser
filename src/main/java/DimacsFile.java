@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 public class DimacsFile {
 
-  private ArrayList<String> dimacsFile;
+  private DNFFormular dnfFormular;
 
   public DimacsFile(File inputFile) throws IOException {
-    dimacsFile = parseFile(inputFile);
+    dnfFormular = parseFile(inputFile);
   }
 
-  private ArrayList<String> parseFile(File inputFile) throws IOException {
+  private DNFFormular parseFile(File inputFile) throws IOException {
     FileReader fileReader = new FileReader(inputFile);
     BufferedReader reader = new BufferedReader(fileReader);
 
@@ -29,95 +29,42 @@ public class DimacsFile {
     if (!checkValidity(lines)){
       throw new IOException("Invalid input file!");
     }
-    return lines;
+    lines.remove(0);
+    return new DNFFormular(lines);
   }
 
   private Boolean checkValidity(ArrayList<String> lines){
     return true;
   }
 
-  private ArrayList<ArrayList<Integer>> getIntList(){
-    ArrayList<ArrayList<Integer>> tmpDimacsFile = new ArrayList<ArrayList<Integer>>();
-    for(String line : dimacsFile){
-      if(line.startsWith("p",0))
-        continue;
-      ArrayList<Integer> numberLine = new ArrayList<Integer>();
-      for(String token: line.split(" ")){
-        numberLine.add(Integer.parseInt(token));
-      }
-      tmpDimacsFile.add(numberLine);
-    }
-    return tmpDimacsFile;
-  }
-
-  private ArrayList<Integer> getLiterals(){
-    ArrayList<ArrayList<Integer>> intList = getIntList();
-    ArrayList<Integer> literals = new ArrayList<Integer>();
-    for(ArrayList<Integer> clause : intList) {
-      for(int literal : clause) {
-        if(!literals.contains(literal))
-          literals.add(literal);
-      }
-    }
-    return literals;
-  }
-
   public int getNumberOfVariables() {
-    return Integer.parseInt(dimacsFile.get(0).split(" ")[2]);
+    return dnfFormular.getNumberOfVariables();
   }
 
   public int getNumberOfClauses(){
-    return Integer.parseInt(dimacsFile.get(0).split(" ")[3]);
+    return dnfFormular.getNumberOfClauses();
   }
 
-  public int getNumberOfUsedLiterals() {
-    return getLiterals().size();
-  }
-
-  public int getClauseCount() {
-      return dimacsFile.size() - 1;
-  }
 
   public ArrayList<Integer> getPureLiterals(){
-    ArrayList<Integer> pureLiterals = getLiterals();
-    ArrayList<Integer> resultPureLiterals = getLiterals();
-    for(int literal : pureLiterals) {
-      if (pureLiterals.contains(literal * -1)){
-        resultPureLiterals.remove((Integer) literal);
-        resultPureLiterals.remove((Integer) (literal * -1));
-      }
-    }
-    return resultPureLiterals;
+    return dnfFormular.getPureLiterals();
   }
 
   public ArrayList<Integer> getPositivePureLiterals(){
-    ArrayList<Integer> pureLiterals = getPureLiterals();
-    pureLiterals.removeIf((Integer x) -> {return x < 0;});
-    return pureLiterals;
+    return dnfFormular.getPositivePureLiterals();
   }
 
   public ArrayList<Integer> getNegativePureLiterals(){
-    ArrayList<Integer> pureLiterals = getPureLiterals();
-    pureLiterals.removeIf((Integer x) -> {return x > 0;});
-    return pureLiterals;
+    return dnfFormular.getNegativePureLiterals();
   }
 
   public ArrayList<Integer> getUnitClauses(){
-    ArrayList<ArrayList<Integer>> intList = getIntList();
-    ArrayList<Integer> unitClauses = new ArrayList<Integer>();
-    for(ArrayList<Integer> clause : intList){
-      if(clause.size() == 2){
-        unitClauses.add(clause.get(0));
-      }
-    }
-    return unitClauses;
+    return dnfFormular.getUnitClauses();
   }
 
   public void printOutput(String input) {
       System.out.println("File: " + input);
       System.out.println("Problem line: #vars: " + getNumberOfVariables() + ", #clauses: " + getNumberOfClauses() );
-      System.out.println("Literal count: " + getNumberOfUsedLiterals());
-      System.out.println("Clause count: " + getClauseCount());
       System.out.println("Positive pure Literals: [" + getPositivePureLiterals().toString() + "]");
       System.out.println("Negative pure Literals: [" + getNegativePureLiterals().toString() + "]");
       System.out.println("Unit clauses: [" + getUnitClauses().toString() + "]");
