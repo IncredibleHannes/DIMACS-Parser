@@ -2,6 +2,12 @@ package main.java;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Collections;
+import java.util.Comparator;
+import java.lang.Math;
 
 public class DNFFormular implements Iterable<Clause> {
 
@@ -67,6 +73,34 @@ public class DNFFormular implements Iterable<Clause> {
       }
     }
     return unitClauses;
+  }
+
+  public int getMostOccurantVariable(){
+    HashMap<Integer,Integer> x = getVariableOccurance();
+    final Optional<Map.Entry<Integer, Integer>> max = x.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue));
+    return max.get().getKey();
+  }
+  public int getMostOccurantVariableCount(){
+    HashMap<Integer,Integer> x = getVariableOccurance();
+    final Optional<Map.Entry<Integer, Integer>> max = x.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue));
+    return max.get().getValue();
+  }
+
+  private HashMap<Integer,Integer> getVariableOccurance(){
+    ArrayList<Integer> allVariables = new ArrayList<Integer>();
+    for (Clause clause : clauses){
+      clause.forEach((Integer variable) -> allVariables.add(Math.abs(variable)));
+    }
+    Collections.sort(allVariables);
+    HashMap<Integer,Integer> result = new HashMap<Integer,Integer>();
+    for(Integer variable : allVariables){
+      Integer x = result.get(variable);
+      if(x != null)
+        result.put(variable, x + 1);
+      else
+        result.put(variable, 1);
+    }
+    return result;
   }
 
   private ArrayList<Integer> getAllVariables(){

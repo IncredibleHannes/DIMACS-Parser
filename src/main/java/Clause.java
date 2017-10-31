@@ -10,7 +10,7 @@ public class Clause implements Iterable<Integer> {
   public Clause(String line){
     String[] variables = line.split(" ");
     for(String variable : variables){
-      if (variable != "0")
+      if (!variable.startsWith("0", 0))
         this.variables.add(Integer.parseInt(variable));
     }
   }

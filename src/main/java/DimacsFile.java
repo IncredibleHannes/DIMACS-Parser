@@ -69,6 +69,14 @@ public class DimacsFile {
     return dnfFormular.getUnitClauses();
   }
 
+  public int getMostOccurantVariable(){
+    return dnfFormular.getMostOccurantVariable();
+  }
+
+  public int getMostOccurantVariableCount(){
+    return dnfFormular.getMostOccurantVariableCount();
+  }
+
   public void printOutput(String input) {
       System.out.println("File: " + input);
       System.out.println("Problem line: #vars: " + numberVariables + ", #clauses: " + numberClauses );
@@ -77,6 +85,8 @@ public class DimacsFile {
       System.out.println("Literals count:\t\t\t" + getNumberOfLiterals());
       System.out.println("Positive pure Literals: \t[" + getPositivePureLiterals().toString() + "]");
       System.out.println("Negative pure Literals: \t[" + getNegativePureLiterals().toString() + "]");
+      System.out.println("Most ofte ocurring variable:\t" + getMostOccurantVariable());
+      System.out.println("Times this varibale Occure:\t" + getMostOccurantVariableCount());
       System.out.println("Unit clauses: \t\t\t[" + getUnitClauses().toString() + "]");
   }
 }
